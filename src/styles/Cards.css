@@ -1,0 +1,64 @@
+.card {
+    display: flex;
+    justify-content: space-around;
+    border-radius: 20px;
+    width: 17%;
+    margin: 1.2em;
+    box-shadow: 4px 2px 11px 0px #888888;
+}
+
+.card-media {
+    display: flex;
+    justify-content: center;
+    background-image: url("https://placeimg.com/640/480/people?t=1577499889438");
+    height: 370px;
+    width: 100%;
+    border-radius: 20px;
+}
+
+.card-content {
+    width: 100%;
+    color: #fff;
+    /*border: 1px solid #000000;*/
+    border-radius: 20px;
+}
+
+.name {
+    display: flex;
+    padding-left: 0.4em;
+    font-weight: bold;
+    font-size:28px;
+    margin-top: 8.5em;
+
+}
+
+.desc {
+    font-weight: bold;
+    font-size:16px;
+    padding-left: 0.8em;
+}
+
+.rate {
+    margin-top: 0.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+ 
+}
+
+.skill {
+    margin-top: 0.5em;
+    padding-left: 0.8em;
+    padding-bottom: 0.5em; 
+}
+ .card-black {
+    display: flex;
+    position: absolute;
+    bottom: 5.1em;
+    width: 225px;
+    height: 150px;
+    border-radius: 0 0 20px 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.3;
+} 

@@ -1,0 +1,90 @@
+hr {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #bbb;
+}
+
+.nav-group {
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.logo {
+    display: flex;
+    justify-content: flex-start;
+    width: 8%;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    background-color: #dddddd;
+    border-radius: 8px;
+    height: 8%;
+    width: 45em;
+    margin-top: 1.3em;
+    margin-left: 1.5em;
+}
+
+.home {
+    display: flex;
+    /* border: solid 1px #000000; */
+    width: 40%;
+    justify-content: space-between;
+    margin-left: 2em;
+    margin-top: 0.5em; 
+}
+
+.user-detail {
+    width: 5em;
+    color: #bbb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.typo-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* border: 1px solid #000; */
+}
+
+.chat {
+    width: 15%;
+    position: relative;
+    color: #bbb;
+    padding-left: 2em;
+}
+
+.notif {
+    width: 13%;
+    padding-left: 2em;
+    padding-right: 2em;
+    position: relative;
+    color: #bbb;
+}
+
+
+/* Grid content */
+.grid-container {
+    display: flex;
+    padding: 2em;
+    height: 100vh;
+    border: 1px solid #000000;
+}
+
+.display {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-page {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+
+}
