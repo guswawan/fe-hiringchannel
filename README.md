@@ -1,6 +1,3 @@
-# fe-hiringchannel
-Front End using React Js
-
 # Front End Hiring Channel App
 
 <p align="center">
