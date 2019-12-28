@@ -1,3 +1,25 @@
+# Front End Hiring Channel App
+---
+
+<p align="center">
+    <img src="https://cdn.worldvectorlogo.com/logos/react.svg" height="90px" width="200px">  
+</p>
+
+---
+
+## Project
+Hiring Channel is a platform where web designers, developers or engineers meet with companies that require services for certain jobs.
+
+
+
+## Technology
+Project is created with
+
+
+* ReactJs
+
+
+--
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,3 +88,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
