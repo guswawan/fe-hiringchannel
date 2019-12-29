@@ -14,12 +14,21 @@ class Register extends Component {
     this.state = {
       username: '',
       password: '',
-      role:''
+      role:'',
+      step: 1,
+      name_engineer: '',
+      description: '',
+      location:'',
+      birth: '',
     }
 
     this.username = this.username.bind(this);
     this.password = this.password.bind(this);
     this.role = this.role.bind(this);
+    // this.name_engineer = this.name_engineer.bind(this);
+    // this.description = this.description.bind(this);
+    // this.location = this.location.bind(this);
+    // this.birth = this.birth.bind(this);
   }
 
     username = (e) => {
@@ -43,6 +52,10 @@ class Register extends Component {
         password: this.state.password,
         role: this.state.role
       }
+      this.getFetch(data)
+    }
+
+    getFetch = (data) => {
       const url = 'http://localhost:5000/v1/user/register'
       axios.post(url, data)
       .then( res => {

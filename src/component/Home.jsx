@@ -14,6 +14,7 @@ import axios from 'axios';
 import getAuth from '../helpers/auth';
 import Cards from './Cards';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import SortIcon from '@material-ui/icons/Sort';
 import '../styles/CardList.css';
 
 import '../styles/Home.css';
@@ -29,11 +30,15 @@ class Home extends Component {
           limit: 5,
           // totalPage: this.Math.ceil(countdata/limit),
           sortBy: 'name',
-          order: 'asc'
+          order: 'asc',
       }
      
   }
  
+
+  setData = () => {
+    this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
+  }
 
   sortAscending = () => {
     const { data } = this.state;
@@ -51,10 +56,6 @@ class Home extends Component {
   handleSearch = (e) => {
     console.log("VALUES ", e.target.value)
     this.setState({search: e.target.value})
-  }
-
-  setData = ( limit, page ) => {
-    this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
   }
 
   handlePageNext = (e) => {
@@ -78,22 +79,13 @@ class Home extends Component {
   }
 
   nextPage = async (e) => {
-    const next = await this.handlePageNext(e);
+    await this.handlePageNext(e);
     this.setData(this.state.limit, this.state.page)
   }
 
   previousPage = async (e) => {
-    const previous = await this.handlePagePrevious(e);
+    await this.handlePagePrevious(e);
     this.setData(this.state.limit, this.state.page)
-  }
-
-  page = (e) => {
-    if(e === 'prev'){
-      this.setState({page: e - 1})
-    } else if(e === 'next'){
-      this.setState({page:e + 1})
-    }
-    this.setData( this.state.limit, this.state.page )
   }
 
   handleSignout = (e) => {
@@ -149,7 +141,7 @@ class Home extends Component {
 
       let filtered = this.state.data.filter(
         (data) => {
-          return data.name_engineer.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+          return data.skill&&data.name_engineer.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         }
       )
 
@@ -170,13 +162,13 @@ class Home extends Component {
                   />
                 </div>
                 <div className="home">
-                  <TypoGraphy variant="inherit" gutterbottom="true">
-                    <h4>Home</h4>
-                  </TypoGraphy>
-                  <TypoGraphy className="user-detail" variant="inherit" gutterbottom="true">
+                
+                  <Button className="btn-home">Home</Button>
+            
+                  <Button className="user-detail">
                       <Avatar>U</Avatar>
                       <h4>User</h4>
-                  </TypoGraphy>
+                  </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
                       <hr width="1" size="40" />
                       <img src={chat} className="chat" alt="chat"></img>
@@ -190,15 +182,14 @@ class Home extends Component {
           </AppBar>
 
           {/* <CardList /> */}
-          <Grid>
-          <div>
-              <Button onClick={this.sortAscending}>ASC</Button>
-              <Button onClick={this.sortDescending}>DSC</Button>
-            </div>
-            
-          </Grid>
-          
+      
+          <Grid className="sort">
+            {/* <Button onClick={this.sortAscending}>ASC</Button> */}
+            Sort <SortIcon onClick={this.sortDescending} />
+            {/*<Button onClick={this.sortDescending}>Sort</Button>*/}
+         </Grid>
           <Grid className="map">
+         
             
             {
                 filtered && filtered.map(data => {
@@ -208,12 +199,12 @@ class Home extends Component {
             }
             
             </Grid>
+           
          
   
             <div className="button-page">
             <ButtonGroup 
               variant="text" 
-     
               aria-label="contained primary button group">
               <Button 
                 name="prev"
@@ -225,6 +216,7 @@ class Home extends Component {
               onClick={this.nextPage}>Next</Button>
             </ButtonGroup>
           </div>
+          
 
           
         </Fragment>
