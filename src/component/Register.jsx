@@ -1,82 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Grid, TextField, Button } from '@material-ui/core/';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import AppBar from 'material-ui/AppBar'
+import RaisedButton from 'material-ui/RaisedButton'
 import logo from '../image/Arkademy-Putih.svg';
 import hiring from '../image/vector-hiring.png';
 import '../styles/Register.css';
 
 class Register extends Component {
-  constructor(){
-    super();
 
-    this.state = {
-      username: '',
-      password: '',
-      role:'',
-      step: 1,
-      name_engineer: '',
-      description: '',
-      location:'',
-      birth: '',
-    }
-
-    this.username = this.username.bind(this);
-    this.password = this.password.bind(this);
-    this.role = this.role.bind(this);
-    // this.name_engineer = this.name_engineer.bind(this);
-    // this.description = this.description.bind(this);
-    // this.location = this.location.bind(this);
-    // this.birth = this.birth.bind(this);
-  }
-
-    username = (e) => {
-      console.log("value ",e.target.value)
-      this.setState({username: e.target.value})
-    }
-    password = (e) => {
-      console.log("value ",e.target.value)
-      this.setState({password: e.target.value})
-    }
-    role = (e) => {
-      console.log("value ",e.target.value)
-      this.setState({role: e.target.value})
-    }
-
-    handleRegister = (e) => {
-      e.preventDefault();
-
-      const data = {
-        username: this.state.username,
-        password: this.state.password,
-        role: this.state.role
-      }
-      this.getFetch(data)
-    }
-
-    getFetch = (data) => {
+  getFetch = (data) => {
       const url = 'http://localhost:5000/v1/user/register'
       axios.post(url, data)
       .then( res => {
-        console.log("res axios ", res.data)
+        console.log("res axios ", res)
         // this.setState({
         //   message: res.data.message
+          const insertId = res.data.data.insertId
           const success = res.data.success
           
-          if (success === true) {
-            Swal.fire({title: 'Success.',
-            text: 'Your account has been created.',
-            icon: 'success'})
-          } else if (success === true) {
-            Swal.fire({title: 'Failed.',
-            text: 'This account already exist.',
-            icon: 'warning'})
-          }
+          // if (success === true) {
+          //   Swal.fire({title: 'Success.',
+          //   text: 'Your account has been created.',
+          //   icon: 'success'})
+          // } else if (success === false) {
+          //   Swal.fire({title: 'Failed.',
+          //   text: 'This account already exist.',
+          //   icon: 'warning'})
+          // }
         // })
       })
       .catch(err => {
-       
+        console.log(err)
         this.setState({
           err: err,
           message: 'Register failed.'
@@ -84,9 +42,27 @@ class Register extends Component {
       })
     }
 
+    continue = (e, datares) => {
+      e.preventDefault();
+      const insertId = datares
+      console.log("INSERTID ",insertId)
+      console.log(this.props)
+
+      const data = {
+          username: this.props.values.username,
+          password: this.props.values.password,
+          role: this.props.values.role,
+      }
+      // const { values: { username, password, role   } } = this.props;
+
+      this.getFetch(data)
+      this.props.nextStep()
+    }
     
     render() {
+      const { values, data, handleChange } = this.props;
       return (
+
         <Grid container sm ={12}>
           <Grid item sm ={7}>
             <div className="left-side">
@@ -108,7 +84,9 @@ class Register extends Component {
                   fullWidth 
                   id="username" 
                   label="Register your username.." 
-                  onChange={this.username}/>
+                  //onChange={this.username}
+                  onChange={handleChange('username')}
+                  defaultValue={values.username}/>
                 </div>
                 <div className="field-password">
                   <label>Password</label>
@@ -117,7 +95,9 @@ class Register extends Component {
                   type="password"
                   id="password" 
                   label="Enter your password.." 
-                  onChange={this.password}/>
+                  //onChange={this.password}
+                  onChange={handleChange('password')}
+                  defaultValue={values.password}/>
                 </div>
                 <div className="field-role">
                   <label>Role User</label>
@@ -125,14 +105,18 @@ class Register extends Component {
                   fullWidth 
                   id="role" 
                   label="company / engineer" 
-                  onChange={this.role}/>
+                  //onChange={this.role}
+                  onChange={handleChange('role')}
+                  defaultValue={values.role}/>
                 </div>
                 <div className="button-login">
                   <Button 
                   variant="contained" 
                   color="primary"
-                  onClick={this.handleRegister}>
-                    Register
+                  //onClick={this.handleRegister}
+                  onClick={this.continue}
+                  >
+                    Continue
                   </Button>
                 </div>
                   <Link to='/login' className="have-account">Have an account? Login</Link>
@@ -140,8 +124,9 @@ class Register extends Component {
             </form>
           </Grid>
         </Grid>
+          
       )
     }
-  }
+}
 
 export default Register
