@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Home from './component/Home';
 import SignIn from './component/SignIn';
-import Register from './component/Register';
 import UserForm from './component/UserForm';
 import { BrowserRouter as Router, Route ,Link } from 'react-router-dom';
 import './App.css';

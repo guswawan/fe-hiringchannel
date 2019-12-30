@@ -1,11 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import { Grid, TextField, Button } from '@material-ui/core/';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import AppBar from 'material-ui/AppBar'
-import RaisedButton from 'material-ui/RaisedButton'
 import logo from '../image/Arkademy-Putih.svg';
 import hiring from '../image/vector-hiring.png';
 import '../styles/Register.css';
@@ -17,21 +13,7 @@ class Register extends Component {
       axios.post(url, data)
       .then( res => {
         console.log("res axios ", res)
-        // this.setState({
-        //   message: res.data.message
-          const insertId = res.data.data.insertId
-          const success = res.data.success
-          
-          // if (success === true) {
-          //   Swal.fire({title: 'Success.',
-          //   text: 'Your account has been created.',
-          //   icon: 'success'})
-          // } else if (success === false) {
-          //   Swal.fire({title: 'Failed.',
-          //   text: 'This account already exist.',
-          //   icon: 'warning'})
-          // }
-        // })
+
       })
       .catch(err => {
         console.log(err)
@@ -60,7 +42,7 @@ class Register extends Component {
     }
     
     render() {
-      const { values, data, handleChange } = this.props;
+      const { values, handleChange } = this.props;
       return (
 
         <Grid container sm ={12}>

@@ -1,8 +1,4 @@
-import React, { Component, Fragment } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import AppBar from 'material-ui/AppBar'
-// import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import React, { Component } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { Grid, TextField ,Button } from '@material-ui/core/';
@@ -13,7 +9,7 @@ import '../styles/Register.css';
 
 
 
-export class DetailEngineer extends Component {
+export class DetailRegister extends Component {
 
 	getFetch = (personalData) => {
       const url = 'http://localhost:5000/v1/engineer'
@@ -144,4 +140,4 @@ export class DetailEngineer extends Component {
 
 
 
-export default DetailEngineer
+export default DetailRegister

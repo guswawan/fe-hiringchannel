@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Register from './Register'
-import DetailEngineer from './DetailEngineer'
-import Confirm from './Confirm'
+import DetailRegister from './DetailRegister'
 
 
 export class UserForm extends Component {
@@ -54,21 +53,15 @@ export class UserForm extends Component {
                 )
             case 2:
                 return(
-                    <DetailEngineer
+                    <DetailRegister
                         nextStep={this.nextStep}
                         prevStep={this.prevStep}
                         handleChange={this.handleChange}
                         values={values}
                     />
                 )
-            case 3:
-                return(
-                    <Confirm
-                        nextStep={this.nextStep}
-                        prevStep={this.prevStep}
-                        values={values}
-                    />
-                )
+            default:
+                //do nothing
         }
 
     }
