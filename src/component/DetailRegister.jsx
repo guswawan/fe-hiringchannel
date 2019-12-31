@@ -22,7 +22,7 @@ export class DetailRegister extends Component {
           
           if (success === 'success') {
             Swal.fire({title: 'Success.',
-            text: 'Your account has been created.',
+            text: 'Your account has been created. Please login.',
             icon: 'success'})
           } else if (success === 'failed') {
             Swal.fire({title: 'Failed.',

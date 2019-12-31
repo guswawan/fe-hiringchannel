@@ -3,11 +3,15 @@ import { Grid, TextField, Button } from '@material-ui/core/'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import getAuth from '../helpers/auth';
 import logo from '../image/Arkademy-Putih.svg';
 import hiring from '../image/vector-hiring.png';
 import '../styles/SignIn.css';
 
+
+
 class SignIn extends Component {
+
   constructor(){
     super()
     this.state = {
@@ -15,9 +19,43 @@ class SignIn extends Component {
       password: null,
       role: null,
       token: null,
-      id_user: null
+      id_user: null,
+      message:''
     }
   }
+
+
+  // checkIdUser = (id_user, role) => {
+  //   const auth = getAuth();
+  //   console.log("ID USER ",id_user)
+  //   console.log("ROLE ",role)
+  //   if(role === 'engineer'){
+  //     axios.get('http://localhost:5000/v1/engineer', { headers: { Authorization: `Bearer ${auth.token}`}})
+  //     .then(res => {
+  //       console.log("resss ",res)
+  //       const data = res.data.result.filter(res => {
+  //         res.id_user === id_user
+  //       })
+  //       // if(data.length > 0){
+  //       //   this.props.history.push("/engineer")
+  //       // } else {
+  //       //   console.log("Data not found.")
+  //       // }
+  //     })
+  //   } else if (role === 'company'){
+  //     axios.get('http://localhost:5000/v1/company', { headers: { Authorization: `Bearer ${auth.token}`}})
+  //     .then(res => {
+  //       const data = res.data.result.filter(res => {
+  //         // res.id_user == id_user
+  //       })
+  //       if(data.length > 0){
+  //         this.props.history.push("/home")
+  //       }else{
+  //         console.log("Data not found.")
+  //       } 
+  //     })
+  //   }
+  //  }
 
   username = (e) => {
     console.log("value ",e.target.value)
@@ -31,6 +69,7 @@ class SignIn extends Component {
     console.log("value ",e.target.value)
     this.setState({role: e.target.value})
   }
+
 
   handleLogin(e){
     e.preventDefault()
@@ -68,7 +107,12 @@ class SignIn extends Component {
       localStorage.setItem('username', this.state.username)
       localStorage.setItem('role', this.state.role)
       console.log("localStorage ",res.data)
-      this.props.history.push("/home")
+      // this.checkIdUser(this.state.id_user, this.state.role)
+      if(this.state.role === 'company'){
+        this.props.history.push("/home")
+      } else if(this.state.role === 'engineer'){
+        this.props.history.push("/home/engineer")
+      }
     })
     .catch(err => {
       console.log(err)
@@ -78,6 +122,11 @@ class SignIn extends Component {
     })
   }
 
+  // componentDidUpdate = (res) => {
+  //   if (this.state.message === "Engineer login success..") {
+
+  //   }
+  // }
 
 
     render() {
@@ -111,7 +160,8 @@ class SignIn extends Component {
               <Link to='/login' className="forgot-password">Forgot Password?</Link>
               <div className="button-login">
                   <Button variant="contained" color="primary"
-                  onClick={(e) => this.handleLogin(e)}>
+                  onClick={(e) => this.handleLogin(e)}
+                  >
                     Login
                   </Button>
               </div>

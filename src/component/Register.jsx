@@ -45,7 +45,7 @@ class Register extends Component {
       const { values, handleChange } = this.props;
       return (
 
-        <Grid container sm ={12}>
+        <Grid container ={12}>
           <Grid item sm ={7}>
             <div className="left-side">
               <img src={logo} className="logo-white" alt="logo"></img>

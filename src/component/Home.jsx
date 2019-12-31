@@ -15,7 +15,6 @@ import getAuth from '../helpers/auth';
 import Cards from './Cards';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SortIcon from '@material-ui/icons/Sort';
-import '../styles/CardList.css';
 
 import '../styles/Home.css';
 
@@ -28,109 +27,104 @@ class Home extends Component {
           token: localStorage.getItem('token'),
           page: 1,
           limit: 5,
-          // totalPage: this.Math.ceil(countdata/limit),
           sortBy: 'name',
           order: 'asc',
       }
      
-  }
+    }
  
 
-  setData = () => {
-    this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
-  }
-
-  sortAscending = () => {
-    const { data } = this.state;
-    console.log("DATA ",data)
-    data.sort((a, b) => a - b)
-    this.setState({ data })
-  }
-
-  sortDescending = () => {
-    const { data } = this.state;
-    data.sort((a, b) => a-b).reverse()
-    this.setState({ data })
-  }
-
-  handleSearch = (e) => {
-    console.log("VALUES ", e.target.value)
-    this.setState({search: e.target.value})
-  }
-
-  handlePageNext = (e) => {
-    let page = this.state.page
-    this.setState({page: page + 1})
-    console.log("PAGE ", this.state.page)
-  }
-
-  handlePagePrevious = (e) => {
-    let page = this.state.page;
-    if(page > 1){
-      this.setState({
-        page: page-1
-      })
-    } else {
-      this.setState({
-        page:1
-      })
+    setData = () => {
+      this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
     }
-    console.log("PAGE ",this.state.page)
-  }
 
-  nextPage = async (e) => {
-    await this.handlePageNext(e);
-    this.setData(this.state.limit, this.state.page)
-  }
+    sortAscending = () => {
+      const { data } = this.state;
+      console.log("DATA ",data)
+      data.sort((a, b) => a - b)
+      this.setState({ data })
+    }
 
-  previousPage = async (e) => {
-    await this.handlePagePrevious(e);
-    this.setData(this.state.limit, this.state.page)
-  }
+    sortDescending = () => {
+      const { data } = this.state;
+      data.sort((a, b) => a-b).reverse()
+      this.setState({ data })
+    }
 
-  handleSignout = (e) => {
-    this.setState({ token: '' });
-    localStorage.clear();
-  }
+    handleSearch = (e) => {
+      console.log("VALUES ", e.target.value)
+      this.setState({search: e.target.value})
+    }
 
-  getFetch = (url) =>{
-      const auth = getAuth();
-      console.log("Get Aouth ",auth)
-      console.log("Get Aouth Role",auth.role)
-      const authRole = auth.role
-      if (authRole === 'company') {
-          axios.get(url, { headers: { Authorization: `Bearer ${auth.token}`}})
-          .then(res => {
-              console.log("res axios ",res.data)
-              this.setState({
-                  data: res.data.result
-                  
-              })
-          })
-      } else if (authRole === 'engineer') {
-          axios.get('http://localhost:5000/v1/engineer/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
-          .then(res => {
-              console.log("res axios ke-2 ", res.data.data)
-              this.setState({
-                  data:res.data.data
-              })
-          })
-          .catch(err => {
-              console.log(err)
-              this.setState({
-                data: 'Not Found.'
-              })
-          })
+    handlePageNext = (e) => {
+      let page = this.state.page
+      this.setState({page: page + 1})
+      console.log("PAGE ", this.state.page)
+    }
+
+    handlePagePrevious = (e) => {
+      let page = this.state.page;
+      if(page > 1){
+        this.setState({
+          page: page-1
+        })
+      } else {
+        this.setState({
+          page:1
+        })
       }
-  }
+      console.log("PAGE ",this.state.page)
+    }
 
-  
+    nextPage = async (e) => {
+      await this.handlePageNext(e);
+      this.setData(this.state.limit, this.state.page)
+    }
 
-  componentDidMount(){
-    this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
-  }
+    previousPage = async (e) => {
+      await this.handlePagePrevious(e);
+      this.setData(this.state.limit, this.state.page)
+    }
 
+    handleSignout = (e) => {
+      this.setState({ token: '' });
+      localStorage.clear();
+    }
 
+    getFetch = (url) =>{
+        const auth = getAuth();
+        console.log("Get Aouth ",auth)
+        console.log("Get Aouth Role",auth.role)
+        const authRole = auth.role
+        if (authRole === 'company') {
+            axios.get(url, { headers: { Authorization: `Bearer ${auth.token}`}})
+            .then(res => {
+                console.log("res axios ",res.data)
+                this.setState({
+                    data: res.data.result
+                    
+                })
+            })
+        } else if (authRole === 'engineer') {
+            axios.get('http://localhost:5000/v1/engineer/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
+            .then(res => {
+                console.log("res axios ke-2 ", res.data.data)
+                this.setState({
+                    data:res.data.data
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                this.setState({
+                  data: 'Not Found.'
+                })
+            })
+        }
+    }
+
+    componentDidMount(){
+      this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
+    }
 
     render() {
       
@@ -187,22 +181,19 @@ class Home extends Component {
             {/* <Button onClick={this.sortAscending}>ASC</Button> */}
             Sort <SortIcon onClick={this.sortDescending} />
             {/*<Button onClick={this.sortDescending}>Sort</Button>*/}
-         </Grid>
-          <Grid className="map">
-         
-            
+          </Grid>
+          <Grid className="map-home">
+
             {
                 filtered && filtered.map(data => {
                     return <Cards key={data.id} name={data.name_engineer}
-                    desc={data.description} skill={data.skill}/>
+                    desc={data.description} skill={data.skill} />
                 })
             }
             
-            </Grid>
-           
-         
-  
-            <div className="button-page">
+          </Grid>
+ 
+          <div className="button-page">
             <ButtonGroup 
               variant="text" 
               aria-label="contained primary button group">
@@ -216,9 +207,7 @@ class Home extends Component {
               onClick={this.nextPage}>Next</Button>
             </ButtonGroup>
           </div>
-          
-
-          
+        
         </Fragment>
       )
     }
