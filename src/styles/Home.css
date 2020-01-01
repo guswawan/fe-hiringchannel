@@ -45,11 +45,15 @@ hr {
 }
 
 .user-detail {
-    width: 5em;
+    width: 8em;
     color: #bbb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+}
+
+.avatar {
+    margin-right: 0.5em;
 }
 
 .typo-wrap {

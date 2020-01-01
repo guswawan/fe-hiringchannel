@@ -160,7 +160,7 @@ class Home extends Component {
                   <Button className="btn-home">Home</Button>
             
                   <Button className="user-detail">
-                      <Avatar>U</Avatar>
+                      <Avatar className="avatar">U</Avatar>
                       <h4>User</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">

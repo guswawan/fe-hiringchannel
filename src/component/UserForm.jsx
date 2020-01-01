@@ -22,7 +22,8 @@ export class UserForm extends Component {
           step: step + 1
         })
       }
-  
+    
+      //prev step
     prevStep = () => {
     const { step } = this.state
     this.setState({
@@ -30,7 +31,7 @@ export class UserForm extends Component {
     })
     }
 
-    //handle field change bio 
+    //handle field change biodata detail
     handleChange = input => e => {
     this.setState({
         [input]: e.target.value

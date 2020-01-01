@@ -15,8 +15,25 @@ import axios from 'axios';
 import getAuth from '../helpers/auth';
 import Cards from './Cards';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import '../styles/Engineer.css';
 import Swal from 'sweetalert2';
+
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Typography from '@material-ui/core/Typography';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 class Engineer extends Component {
     constructor(props) {
@@ -134,7 +151,6 @@ class Engineer extends Component {
 
     handlePatch = () => {
       const auth = getAuth();
-      const username = auth.username;
       const token = auth.token;
       const url = `http://localhost:5000/v1/engineer/${this.state.id}`
       console.log("ID ",this.state.id)
@@ -177,6 +193,16 @@ class Engineer extends Component {
 
 
     render() {
+
+      const StyledTableCell = withStyles(theme => ({
+        head: {
+          backgroundColor: theme.palette.common.black,
+          color: theme.palette.common.white,
+        },
+        body: {
+          fontSize: 14,
+        },
+      }))(TableCell);
       
       if (!this.state.token) {
         this.props.history.push('/login');
@@ -211,7 +237,7 @@ class Engineer extends Component {
                   <Button className="btn-home">Home</Button>
             
                   <Button className="user-detail">
-                      <Avatar>U</Avatar>
+                  <Avatar className="avatar">U</Avatar>
                       <h4>User</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
@@ -237,16 +263,106 @@ class Engineer extends Component {
                 })
             }
 
+          </Grid>
+          <Grid className="map-table">
+            <div className="table-title">
+              <h1><b>Job list table.</b></h1>
+              <hr />
+            </div>
+            <br/>
+            <div className="wrap-table">
+              <TableContainer component={Paper}>
+                <Table className="{classes.table}" aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="table-head-side-left">Company</TableCell>
+                      <TableCell className="table-head" align="center">Project</TableCell>
+                      <TableCell className="table-head" align="right">Status</TableCell>
+                      <TableCell className="table-head" align="right">Action</TableCell>
+                      <TableCell className="table-head-side-right" align="right">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* {rows.map(row => (
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell component="th" scope="row">
+                          {row.name}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">{row.calories}</StyledTableCell>
+                        <StyledTableCell align="right">{row.fat}</StyledTableCell>
+                        <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                        <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                      </StyledTableRow>
+                    ))} */}
+                     <TableRow key="{row.name}">
+                        <TableCell component="th" scope="row">
+                          BukaTerop
+                        </TableCell>
+                        <TableCell align="right">Membuat fitur traking</TableCell>
+                        <TableCell align="right">Accept</TableCell>
+                        <TableCell align="right">x</TableCell>
+                        <TableCell align="right">v</TableCell>
+                      </TableRow>
+
+                      <TableRow key="{row.name}">
+                        <TableCell component="th" scope="row">
+                          JuicePedia
+                        </TableCell>
+                        <TableCell align="right">Create new fitur chat with emoji</TableCell>
+                        <TableCell align="right">Accept</TableCell>
+                        <TableCell align="right">x</TableCell>
+                        <TableCell align="right">v</TableCell>
+                      </TableRow>
+
+                      <TableRow key="{row.name}">
+                        <TableCell component="th" scope="row">
+                          BliBli Aja
+                        </TableCell>
+                        <TableCell align="right">Mebuat login dengan jwt</TableCell>
+                        <TableCell align="right">Accept</TableCell>
+                        <TableCell align="right">x</TableCell>
+                        <TableCell align="right">v</TableCell>
+                      </TableRow>
+                      
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </Grid>
+          
+          <Grid className="map-form">
+            {/* //PAPER MENU */}
+            {/* <div>
+              <Paper className="{classes.root}">
+                <MenuList>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <SendIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit">A short message</Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <PriorityHighIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit">A very long text that overflows</Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <DraftsIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                      A very long text that overflows
+                    </Typography>
+                  </MenuItem>
+                </MenuList>
+              </Paper>
+            </div> */}
+
             <div className="wrap-form">
               <div className="group-form-editprofile">
                 <h2>Edit profile</h2>
                 <p>Companies on Hiring Channel will get to know you with the info below</p>
-                {/* {
-                this.state.data.map(data => {
-                  return <jjj />
-
-                })
-                } */}
                 <div className="form-editprofile">
                   <TextField
                   label="Full Name"
@@ -299,8 +415,6 @@ class Engineer extends Component {
                     <Button 
                     variant="text" 
                     color="secondary"
-                    //onClick={this.handleRegister}
-                    // onClick={this.continue}
                     >
                       Cancel&nbsp;
                     </Button>
@@ -309,7 +423,6 @@ class Engineer extends Component {
                     variant="contained" 
                     color="inherit"
                     onClick={e => this.handlePatch(e)}
-                    // onClick={this.continue}
                     >
                       Done
                     </Button>
@@ -317,7 +430,7 @@ class Engineer extends Component {
                 </div>
               </div>
               {/* skill */}
-              {/* <div className="group-form-editprofile">
+              <div className="group-form-editprofile">
                 <h2>Your Skill</h2>
                 <p>Upgrade more your skill on Hiring Channel, insert below</p>
                 <div className="form-editprofile">
@@ -344,7 +457,7 @@ class Engineer extends Component {
                     </Button>
                   </ButtonGroup>
                 </div>
-              </div> */}
+              </div>
             </div>
           </Grid>
         </Fragment>

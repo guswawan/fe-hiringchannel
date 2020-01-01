@@ -63,8 +63,10 @@ export class DetailRegister extends Component {
 	}
 
     render() {
-    	const { values, handleChange } = this.props;
+      const { values, handleChange } = this.props;
+      
         return (
+
         	<Grid container sm ={12}>
           <Grid item sm ={7}>
             <div className="left-side">
@@ -76,6 +78,7 @@ export class DetailRegister extends Component {
               </div>
             </div>
           </Grid>
+
           <Grid item sm ={5}>
             <h1>Complete your detail</h1>
             <form method="post" type="submit">
@@ -111,11 +114,10 @@ export class DetailRegister extends Component {
                 		id="date"
                 		type="date"
                 		label="Date of birth"
-       					//floatingLabelText="Date of birth"
-       					className="birth"
-       					InputLabelProps={{
-				          shrink: true,
-				        }}
+       					    className="birth"
+       					    InputLabelProps={{
+				              shrink: true,
+				            }}
                 		onChange={handleChange('birth')}
                 		defaultValue={values.birth}	
                 	/>
@@ -123,7 +125,6 @@ export class DetailRegister extends Component {
                   <Button 
                   variant="contained" 
                   color="primary"
-                  //onClick={this.handleRegister}
                   onClick={this.continue}>
                     Register
                   </Button>

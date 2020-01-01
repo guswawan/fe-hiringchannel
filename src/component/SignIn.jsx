@@ -3,7 +3,6 @@ import { Grid, TextField, Button } from '@material-ui/core/'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import getAuth from '../helpers/auth';
 import logo from '../image/Arkademy-Putih.svg';
 import hiring from '../image/vector-hiring.png';
 import '../styles/SignIn.css';
@@ -12,121 +11,81 @@ import '../styles/SignIn.css';
 
 class SignIn extends Component {
 
-  constructor(){
-    super()
-    this.state = {
-      username: null,
-      password: null,
-      role: null,
-      token: null,
-      id_user: null,
-      message:''
-    }
-  }
-
-
-  // checkIdUser = (id_user, role) => {
-  //   const auth = getAuth();
-  //   console.log("ID USER ",id_user)
-  //   console.log("ROLE ",role)
-  //   if(role === 'engineer'){
-  //     axios.get('http://localhost:5000/v1/engineer', { headers: { Authorization: `Bearer ${auth.token}`}})
-  //     .then(res => {
-  //       console.log("resss ",res)
-  //       const data = res.data.result.filter(res => {
-  //         res.id_user === id_user
-  //       })
-  //       // if(data.length > 0){
-  //       //   this.props.history.push("/engineer")
-  //       // } else {
-  //       //   console.log("Data not found.")
-  //       // }
-  //     })
-  //   } else if (role === 'company'){
-  //     axios.get('http://localhost:5000/v1/company', { headers: { Authorization: `Bearer ${auth.token}`}})
-  //     .then(res => {
-  //       const data = res.data.result.filter(res => {
-  //         // res.id_user == id_user
-  //       })
-  //       if(data.length > 0){
-  //         this.props.history.push("/home")
-  //       }else{
-  //         console.log("Data not found.")
-  //       } 
-  //     })
-  //   }
-  //  }
-
-  username = (e) => {
-    console.log("value ",e.target.value)
-    this.setState({username: e.target.value})
-  }
-  password = (e) => {
-    console.log("value ",e.target.value)
-    this.setState({password: e.target.value})
-  }
-  role = (e) => {
-    console.log("value ",e.target.value)
-    this.setState({role: e.target.value})
-  }
-
-
-  handleLogin(e){
-    e.preventDefault()
-    const url = 'http://localhost:5000/v1/user/login'
-    const data = {
-      username: this.state.username,
-      password: this.state.password,
-      role: this.state.engineer,
-    }
-    axios.post(url, data)
-    .then(res => {
-
-      const success = res.data.success
-      console.log("Success ", res.data)
-      if (success === true) {
-        Swal.fire({title: 'Login Success.',
-        // text: 'Your account has been created.',
-        icon: 'success'})
-      } else if (success === false) {
-        Swal.fire({title: 'Login Failed.',
-        // text: 'This account already exist.',
-        icon: 'warning'})
+    constructor(){
+      super()
+      this.state = {
+        username: null,
+        password: null,
+        role: null,
+        token: null,
+        id_user: null,
+        message:''
       }
-      
-      this.setState({
-        username: res.data.data.username,
-        role: res.data.data.role,
-        token: res.data.token,
-        id_user: res.data.data.id_user,
-        message: res.data.data.message
-      })
-      console.log("token ", res.data.token)
-      localStorage.setItem('token', this.state.token)
-      localStorage.setItem('id_user', this.state.id_user)
-      localStorage.setItem('username', this.state.username)
-      localStorage.setItem('role', this.state.role)
-      console.log("localStorage ",res.data)
-      // this.checkIdUser(this.state.id_user, this.state.role)
-      if(this.state.role === 'company'){
-        this.props.history.push("/home")
-      } else if(this.state.role === 'engineer'){
-        this.props.history.push("/home/engineer")
+    }
+
+    username = (e) => {
+      console.log("value ",e.target.value)
+      this.setState({username: e.target.value})
+    }
+    password = (e) => {
+      console.log("value ",e.target.value)
+      this.setState({password: e.target.value})
+    }
+    role = (e) => {
+      console.log("value ",e.target.value)
+      this.setState({role: e.target.value})
+    }
+
+
+    handleLogin(e){
+      e.preventDefault()
+      const url = 'http://localhost:5000/v1/user/login'
+      const data = {
+        username: this.state.username,
+        password: this.state.password,
+        role: this.state.engineer,
       }
-    })
-    .catch(err => {
-      console.log(err)
-      this.setState({
-        message: 'Login failed.'
+      axios.post(url, data)
+      .then(res => {
+
+        const success = res.data.success
+        console.log("Success ", res.data)
+        if (success === true) {
+          Swal.fire({title: 'Login Success.',
+          // text: 'Your account has been created.',
+          icon: 'success'})
+        } else if (success === false) {
+          Swal.fire({title: 'Login Failed.',
+          // text: 'This account already exist.',
+          icon: 'warning'})
+        }
+        
+        this.setState({
+          username: res.data.data.username,
+          role: res.data.data.role,
+          token: res.data.token,
+          id_user: res.data.data.id_user,
+          message: res.data.data.message
+        })
+        console.log("token ", res.data.token)
+        localStorage.setItem('token', this.state.token)
+        localStorage.setItem('id_user', this.state.id_user)
+        localStorage.setItem('username', this.state.username)
+        localStorage.setItem('role', this.state.role)
+        console.log("localStorage ",res.data)
+        if(this.state.role === 'company'){
+          this.props.history.push("/home")
+        } else if(this.state.role === 'engineer'){
+          this.props.history.push("/home/engineer")
+        }
       })
-    })
-  }
-
-  // componentDidUpdate = (res) => {
-  //   if (this.state.message === "Engineer login success..") {
-
-  //   }
-  // }
+      .catch(err => {
+        console.log(err)
+        this.setState({
+          message: 'Login failed.'
+        })
+      })
+    }
 
 
     render() {

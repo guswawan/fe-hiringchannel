@@ -24,25 +24,22 @@ class Register extends Component {
       })
     }
 
-    continue = (e, datares) => {
+    continue = (e) => {
       e.preventDefault();
-      const insertId = datares
-      console.log("INSERTID ",insertId)
-      console.log(this.props)
+      console.log("THIS PROPS ",this.props)
 
       const data = {
           username: this.props.values.username,
           password: this.props.values.password,
           role: this.props.values.role,
       }
-      // const { values: { username, password, role   } } = this.props;
-
       this.getFetch(data)
       this.props.nextStep()
     }
     
     render() {
       const { values, handleChange } = this.props;
+      
       return (
 
         <Grid container ={12}>
@@ -56,6 +53,7 @@ class Register extends Component {
               </div>
             </div>
           </Grid>
+
           <Grid item sm ={5}>
             <h1>Register</h1>
             <form method="post" type="submit">
@@ -66,7 +64,6 @@ class Register extends Component {
                   fullWidth 
                   id="username" 
                   label="Register your username.." 
-                  //onChange={this.username}
                   onChange={handleChange('username')}
                   defaultValue={values.username}/>
                 </div>
@@ -77,7 +74,6 @@ class Register extends Component {
                   type="password"
                   id="password" 
                   label="Enter your password.." 
-                  //onChange={this.password}
                   onChange={handleChange('password')}
                   defaultValue={values.password}/>
                 </div>
@@ -87,7 +83,6 @@ class Register extends Component {
                   fullWidth 
                   id="role" 
                   label="company / engineer" 
-                  //onChange={this.role}
                   onChange={handleChange('role')}
                   defaultValue={values.role}/>
                 </div>
@@ -95,7 +90,6 @@ class Register extends Component {
                   <Button 
                   variant="contained" 
                   color="primary"
-                  //onClick={this.handleRegister}
                   onClick={this.continue}
                   >
                     Continue
