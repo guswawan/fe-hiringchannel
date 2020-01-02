@@ -16,7 +16,6 @@ import getAuth from '../helpers/auth';
 import Cards from './Cards';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -27,13 +26,6 @@ import Paper from '@material-ui/core/Paper';
 import '../styles/Engineer.css';
 import Swal from 'sweetalert2';
 
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Typography from '@material-ui/core/Typography';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 class Engineer extends Component {
     constructor(props) {
@@ -127,6 +119,7 @@ class Engineer extends Component {
                 })
             })
         } else if (authRole === 'engineer') {
+          console.log("TEST")
             axios.get('http://localhost:5000/v1/engineer/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
             .then(res => {
               console.log("res axios ke-2 B ", res.data.data)  
@@ -183,9 +176,6 @@ class Engineer extends Component {
       })
     }
 
-    handlePostSkill = () => {
-      
-    }
 
     componentDidMount(){
       this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
@@ -193,16 +183,6 @@ class Engineer extends Component {
 
 
     render() {
-
-      const StyledTableCell = withStyles(theme => ({
-        head: {
-          backgroundColor: theme.palette.common.black,
-          color: theme.palette.common.white,
-        },
-        body: {
-          fontSize: 14,
-        },
-      }))(TableCell);
       
       if (!this.state.token) {
         this.props.history.push('/login');
@@ -210,11 +190,11 @@ class Engineer extends Component {
 
 
       //Filter (search)
-      // let filtered = this.state.data.filter(
-      //   (data) => {
-      //     return data.skill&&data.name_engineer.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
-      //   }
-      // )
+      let filtered = this.state.data.filter(
+        (data) => {
+          return data.skill&&data.name_engineer.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+        }
+      )
 
       return (
         <Fragment>
@@ -257,7 +237,7 @@ class Engineer extends Component {
           <Grid className="map">
 
             {
-                this.state.data.map(data => {
+                filtered && filtered.map(data => {
                     return <Cards key={data.id} name={data.name_engineer}
                     desc={data.description} skill={data.skill}/>
                 })
@@ -276,10 +256,9 @@ class Engineer extends Component {
                   <TableHead>
                     <TableRow>
                       <TableCell className="table-head-side-left">Company</TableCell>
-                      <TableCell className="table-head" align="center">Project</TableCell>
-                      <TableCell className="table-head" align="right">Status</TableCell>
-                      <TableCell className="table-head" align="right">Action</TableCell>
-                      <TableCell className="table-head-side-right" align="right">Action</TableCell>
+                      <TableCell className="table-head" align="left">Project Name</TableCell>
+                      <TableCell className="table-head" align="right">Status Project</TableCell>
+                      <TableCell className="table-head-side-right" align="center">Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -294,34 +273,40 @@ class Engineer extends Component {
                         <StyledTableCell align="right">{row.protein}</StyledTableCell>
                       </StyledTableRow>
                     ))} */}
-                     <TableRow key="{row.name}">
+                     <TableRow >
                         <TableCell component="th" scope="row">
                           BukaTerop
                         </TableCell>
-                        <TableCell align="right">Membuat fitur traking</TableCell>
-                        <TableCell align="right">Accept</TableCell>
-                        <TableCell align="right">x</TableCell>
-                        <TableCell align="right">v</TableCell>
+                        <TableCell align="left">Membuat fitur traking</TableCell>
+                        <TableCell align="right">Pending</TableCell>
+                        <TableCell align="center">
+                          <Button color="secondary">x</Button>
+                          <Button color="inherit">v</Button>
+                        </TableCell>
                       </TableRow>
 
                       <TableRow key="{row.name}">
                         <TableCell component="th" scope="row">
                           JuicePedia
                         </TableCell>
-                        <TableCell align="right">Create new fitur chat with emoji</TableCell>
-                        <TableCell align="right">Accept</TableCell>
-                        <TableCell align="right">x</TableCell>
-                        <TableCell align="right">v</TableCell>
+                        <TableCell align="left">Create new fitur chat with emoji</TableCell>
+                        <TableCell align="right">Pending</TableCell>
+                        <TableCell align="center">
+                          <Button color="secondary">x</Button>
+                          <Button color="inherit">v</Button>
+                        </TableCell>
                       </TableRow>
 
                       <TableRow key="{row.name}">
                         <TableCell component="th" scope="row">
                           BliBli Aja
                         </TableCell>
-                        <TableCell align="right">Mebuat login dengan jwt</TableCell>
-                        <TableCell align="right">Accept</TableCell>
-                        <TableCell align="right">x</TableCell>
-                        <TableCell align="right">v</TableCell>
+                        <TableCell align="left">Mebuat login dengan jwt</TableCell>
+                        <TableCell align="right">Pending</TableCell>
+                        <TableCell align="center">
+                          <Button color="secondary">x</Button>
+                          <Button color="inherit">v</Button>
+                        </TableCell>
                       </TableRow>
                       
                   </TableBody>
@@ -430,7 +415,7 @@ class Engineer extends Component {
                 </div>
               </div>
               {/* skill */}
-              <div className="group-form-editprofile">
+              {/* <div className="group-form-editprofile">
                 <h2>Your Skill</h2>
                 <p>Upgrade more your skill on Hiring Channel, insert below</p>
                 <div className="form-editprofile">
@@ -457,7 +442,7 @@ class Engineer extends Component {
                     </Button>
                   </ButtonGroup>
                 </div>
-              </div>
+              </div> */}
             </div>
           </Grid>
         </Fragment>
