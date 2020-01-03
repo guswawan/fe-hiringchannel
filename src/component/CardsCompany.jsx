@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 import '../styles/Cards.css';
 
 
- const Cards = (props) => {
+ const CardsCompany = (props) => {
 
      return(
-      <Link 
-      to={{
-        pathname: "/home/detail-engineer/",
-        state: {data: props.goDetail} 
-      }} 
-      className="link-to-detail">
+      // <Link 
+      // to={{
+      //   pathname: "/home/detail-engineer/",
+      //   state: {data: props.goDetail} 
+      // }} 
+      // className="link-to-detail">
       <div className="card">
         <div className="card-media">
           <div className="card-content">
@@ -24,18 +24,18 @@ import '../styles/Cards.css';
             <div className="desc">
             {props.desc}
             </div>
-            <div className="rate">
+            {/* <div className="rate">
               <img src={Check} alt="check" />&nbsp;18 Project &nbsp;&nbsp;
               <img src={Star} alt="check" />&nbsp;89% Success Rate 
-            </div>
+            </div> */}
             <div className="skill">
-            <b>Skill:</b> <br/>{props.skill}
+            <b>Location:</b> <br/>{props.location}
             </div>
           </div>
         </div>
       </div>
-      </Link>
+      // </Link>
      )
  } 
 
-export default Cards
+export default CardsCompany

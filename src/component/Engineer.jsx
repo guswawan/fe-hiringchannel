@@ -31,14 +31,19 @@ class Engineer extends Component {
     constructor(props) {
       super(props)
       this.state = {
+          project: [],
           data: [],
           id:'',
           name_engineer:'',
           description:'',
           location:'',
           birth:'',
-          skill:'',
+          skill_item:'',
           search: '',
+          name_company: '',
+          name_project: '',
+          status_project:'',
+          status_engineer: '',
           token: localStorage.getItem('token'),
           page: 1,
           limit: 5,
@@ -48,57 +53,10 @@ class Engineer extends Component {
     }
  
 
-    setData = () => {
-      this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
-    }
-
-    // sortAscending = () => {
-    //   const { data } = this.state;
-    //   console.log("DATA ",data)
-    //   data.sort((a, b) => a - b)
-    //   this.setState({ data })
-    // }
-
-    // sortDescending = () => {
-    //   const { data } = this.state;
-    //   data.sort((a, b) => a-b).reverse()
-    //   this.setState({ data })
-    // }
-
     handleSearch = (e) => {
       console.log("VALUES ", e.target.value)
       this.setState({search: e.target.value})
     }
-
-    // handlePageNext = (e) => {
-    //   let page = this.state.page
-    //   this.setState({page: page + 1})
-    //   console.log("PAGE ", this.state.page)
-    // }
-
-    // handlePagePrevious = (e) => {
-    //   let page = this.state.page;
-    //   if(page > 1){
-    //     this.setState({
-    //       page: page-1
-    //     })
-    //   } else {
-    //     this.setState({
-    //       page:1
-    //     })
-    //   }
-    //   console.log("PAGE ",this.state.page)
-    // }
-
-    // nextPage = async (e) => {
-    //   await this.handlePageNext(e);
-    //   this.setData(this.state.limit, this.state.page)
-    // }
-
-    // previousPage = async (e) => {
-    //   await this.handlePagePrevious(e);
-    //   this.setData(this.state.limit, this.state.page)
-    // }
 
     handleSignout = (e) => {
       this.setState({ token: '' });
@@ -119,7 +77,6 @@ class Engineer extends Component {
                 })
             })
         } else if (authRole === 'engineer') {
-          console.log("TEST")
             axios.get('http://localhost:5000/v1/engineer/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
             .then(res => {
               console.log("res axios ke-2 B ", res.data.data)  
@@ -140,6 +97,27 @@ class Engineer extends Component {
                 })
             })
         }
+    }
+
+    getProject = () => {
+      const auth = getAuth();
+      const url = `http://localhost:5000/v1/project`
+
+      axios.get(url, { Authorization: `Bearer ${auth.token}`})
+      .then(res => {
+        this.setState({
+          project: res.data.data,
+          // id_project: res.data.data.id_project,
+          // id_engineer: res.data.data.id_engineer,
+          // id_company: res.data.data.id_company,
+          // name_company: res.data.data.name_company,
+          // name_project: res.data.data.name_project,
+          // status_project: res.data.data.status_project,
+          // status_engineer: res.data.data.status_engineer,
+
+        })
+        console.log("PROJECT ",this.state.project)
+      })
     }
 
     handlePatch = () => {
@@ -176,25 +154,93 @@ class Engineer extends Component {
       })
     }
 
+    handleStatusProject = (index, status_project, status_engineer) => {
+      console.log("AAAA ", this.state.id_project)
+    }
+
+    handleSkillUpgrade = () => {
+      const auth = getAuth();
+      const token = auth.token;
+      const url = `http://localhost:5000/v1/engineer/skill/${this.state.id}`
+      console.log("ID ENG ",this.state.id)
+      const dataSkill = {
+        skill_item: this.state.skill_item,
+        // id: this.state.id,
+      }
+      const headers = { Authorization: `Bearer ${token}`};
+
+      axios.post(url, null, {
+        headers: headers,
+        params: dataSkill
+      })
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title:'Success',
+          text:'Skill Upgraded.'
+        })
+      })
+      .catch(err => {
+        Swal.fire ({
+          icon: 'error',
+          title: 'error',
+          text: 'Update Failed.'
+        })
+      })
+    }
+
+    handleSkillDelete = () => {
+      const auth = getAuth();
+      const token = auth.token;
+      const url = `http://localhost:5000/v1/engineer/skill/${this.state.skill_item}`
+      console.log("ID ENG ",this.state.id)
+      const dataSkill = {
+        skill_item: this.state.skill_item,
+        // id: this.state.id,
+      }
+      const headers = { Authorization: `Bearer ${token}`};
+
+      axios.delete(url, null, {
+        headers: headers,
+        params: dataSkill
+      })
+      .then(res => {
+        Swal.fire({
+          icon: 'success',
+          title:'Success',
+          text:'Skill Deleted.'
+        })
+      })
+      .catch(err => {
+        Swal.fire ({
+          icon: 'error',
+          title: 'error',
+          text: 'Failed deleted.'
+        })
+      })
+    }
+
 
     componentDidMount(){
-      this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
+      console.log("componentDidMount")
+      this.getFetch(`http://localhost:5000/v1/engineer/profile`)
+      this.getProject(`http://localhost:5000/v1/project`)
     }
 
 
     render() {
+      // console.log("DTA ENGIN ",this.state.data)
       
       if (!this.state.token) {
         this.props.history.push('/login');
       }
 
-
-      //Filter (search)
       let filtered = this.state.data.filter(
-        (data) => {
+        data => {
           return data.skill&&data.name_engineer.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
         }
       )
+
 
       return (
         <Fragment>
@@ -257,58 +303,24 @@ class Engineer extends Component {
                     <TableRow>
                       <TableCell className="table-head-side-left">Company</TableCell>
                       <TableCell className="table-head" align="left">Project Name</TableCell>
-                      <TableCell className="table-head" align="right">Status Project</TableCell>
+                      <TableCell className="table-head" align="center">Status Project</TableCell>
                       <TableCell className="table-head-side-right" align="center">Action</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {/* {rows.map(row => (
-                      <StyledTableRow key={row.name}>
-                        <StyledTableCell component="th" scope="row">
-                          {row.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                        <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                        <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                        <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                      </StyledTableRow>
-                    ))} */}
-                     <TableRow >
+                    {this.state.project.map(project => (
+                      <TableRow key={project.id_project}>
                         <TableCell component="th" scope="row">
-                          BukaTerop
+                          {project.name_company}
                         </TableCell>
-                        <TableCell align="left">Membuat fitur traking</TableCell>
-                        <TableCell align="right">Pending</TableCell>
+                        <TableCell align="left">{project.name_project}</TableCell>
+                        <TableCell align="center">{project.status_project}</TableCell>
                         <TableCell align="center">
                           <Button color="secondary">x</Button>
-                          <Button color="inherit">v</Button>
+                          <Button color="inherit" onClick={this.handleStatusProject}>v</Button>
                         </TableCell>
                       </TableRow>
-
-                      <TableRow key="{row.name}">
-                        <TableCell component="th" scope="row">
-                          JuicePedia
-                        </TableCell>
-                        <TableCell align="left">Create new fitur chat with emoji</TableCell>
-                        <TableCell align="right">Pending</TableCell>
-                        <TableCell align="center">
-                          <Button color="secondary">x</Button>
-                          <Button color="inherit">v</Button>
-                        </TableCell>
-                      </TableRow>
-
-                      <TableRow key="{row.name}">
-                        <TableCell component="th" scope="row">
-                          BliBli Aja
-                        </TableCell>
-                        <TableCell align="left">Mebuat login dengan jwt</TableCell>
-                        <TableCell align="right">Pending</TableCell>
-                        <TableCell align="center">
-                          <Button color="secondary">x</Button>
-                          <Button color="inherit">v</Button>
-                        </TableCell>
-                      </TableRow>
-                      
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -316,34 +328,6 @@ class Engineer extends Component {
           </Grid>
           
           <Grid className="map-form">
-            {/* //PAPER MENU */}
-            {/* <div>
-              <Paper className="{classes.root}">
-                <MenuList>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <SendIcon fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit">A short message</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <PriorityHighIcon fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit">A very long text that overflows</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <DraftsIcon fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                      A very long text that overflows
-                    </Typography>
-                  </MenuItem>
-                </MenuList>
-              </Paper>
-            </div> */}
-
             <div className="wrap-form">
               <div className="group-form-editprofile">
                 <h2>Edit profile</h2>
@@ -415,15 +399,15 @@ class Engineer extends Component {
                 </div>
               </div>
               {/* skill */}
-              {/* <div className="group-form-editprofile">
+              <div className="group-form-editprofile">
                 <h2>Your Skill</h2>
                 <p>Upgrade more your skill on Hiring Channel, insert below</p>
                 <div className="form-editprofile">
                   <TextField
                   label="Insert your skill"
                   id="outlined-size-small"
-                  defaultValue={this.state.skill}
-                  onChange={ e => {this.setState({skill:e.target.value})
+                  defaultValue={this.state.skill_item}
+                  onChange={ e => {this.setState({skill_item:e.target.value})
                   console.log(e.target.value)}}
                   variant="outlined"
                   size="small"
@@ -432,17 +416,25 @@ class Engineer extends Component {
                 </div>
                 <div className="btn-editprofile">
                   <ButtonGroup>
-                    <Button 
-                    variant="contained" 
-                    color="inherit"
-                    //onClick={this.handleRegister}
+                  <Button 
+                    variant="text" 
+                    color="secondary"
+                    onClick={this.handleSkillDelete}
                     // onClick={this.continue}
                     >
-                      Done
+                      Delete
+                    </Button>
+                    <Button 
+                    variant="text" 
+                    color="inherit"
+                    onClick={this.handleSkillUpgrade}
+                    // onClick={this.continue}
+                    >
+                      Add
                     </Button>
                   </ButtonGroup>
                 </div>
-              </div> */}
+              </div>
             </div>
           </Grid>
         </Fragment>

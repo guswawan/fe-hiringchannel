@@ -23,6 +23,7 @@ class Home extends Component {
       super(props)
       this.state = {
           data: [],
+          dataCompany:[],
           search: '',
           token: localStorage.getItem('token'),
           page: 1,
@@ -37,6 +38,27 @@ class Home extends Component {
     setData = () => {
       this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
     }
+
+
+    getCompanyProfile = () => {
+      const auth = getAuth();
+    
+      axios.get('http://localhost:5000/v1/company/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
+      .then(res => {
+          console.log("res axios pro company ", res.data.data[0])
+          this.setState({
+              dataCompany:res.data.data[0]
+          })
+      })
+      .catch(err => {
+          console.log(err)
+          this.setState({
+            dataCompany: 'Not Found.'
+          })
+      })
+      this.props.history.push('/company')
+    }
+
 
     sortAscending = () => {
       const { data } = this.state;
@@ -91,6 +113,10 @@ class Home extends Component {
       localStorage.clear();
     }
 
+    handleDetail = (id) => {
+      this.props.history.push(`/home/detail-engineer/${id}`)
+    }
+
     getFetch = (url) =>{
         const auth = getAuth();
         console.log("Get Aouth ",auth)
@@ -98,6 +124,7 @@ class Home extends Component {
         const authRole = auth.role
         if (authRole === 'company') {
             axios.get(url, { headers: { Authorization: `Bearer ${auth.token}`}})
+
             .then(res => {
                 console.log("res axios ",res.data)
                 this.setState({
@@ -105,10 +132,11 @@ class Home extends Component {
                     
                 })
             })
+            
         } else if (authRole === 'engineer') {
             axios.get('http://localhost:5000/v1/engineer/profile', { headers: { Authorization: `Bearer ${auth.token}`}})
             .then(res => {
-                console.log("res axios ke-2 ", res.data.data)
+                console.log("res axios pro eng ", res.data.data)
                 this.setState({
                     data:res.data.data
                 })
@@ -124,6 +152,7 @@ class Home extends Component {
 
     componentDidMount(){
       this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
+      // this.getCompanyProfile(`http://localhost:5000/v1/company/profile`)
     }
 
     render() {
@@ -159,7 +188,9 @@ class Home extends Component {
                 
                   <Button className="btn-home">Home</Button>
             
-                  <Button className="user-detail">
+                  <Button 
+                  className="user-detail"
+                  onClick={this.getCompanyProfile}>
                       <Avatar className="avatar">U</Avatar>
                       <h4>User</h4>
                   </Button>
@@ -187,7 +218,7 @@ class Home extends Component {
             {
                 filtered && filtered.map(data => {
                     return <Cards key={data.id} name={data.name_engineer}
-                    desc={data.description} skill={data.skill} />
+                    desc={data.description} skill={data.skill} goDetail={data.id}/>
                 })
             }
             
