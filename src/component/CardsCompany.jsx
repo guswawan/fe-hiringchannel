@@ -1,7 +1,7 @@
 import React from 'react';
-import Check from '../image/check.png';
-import Star from '../image/star.png';
-import { Link } from 'react-router-dom';
+// import Check from '../image/check.png';
+// import Star from '../image/star.png';
+// import { Link } from 'react-router-dom';
 import '../styles/Cards.css';
 
 

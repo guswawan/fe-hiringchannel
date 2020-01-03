@@ -114,6 +114,8 @@ class Home extends Component {
     }
 
     handleDetail = (id) => {
+      console.log("GO DETAIL ", this.getCompanyProfile(`http://localhost:5000/v1/engineer/profile`))
+      this.getCompanyProfile()
       this.props.history.push(`/home/detail-engineer/${id}`)
     }
 
@@ -124,7 +126,6 @@ class Home extends Component {
         const authRole = auth.role
         if (authRole === 'company') {
             axios.get(url, { headers: { Authorization: `Bearer ${auth.token}`}})
-
             .then(res => {
                 console.log("res axios ",res.data)
                 this.setState({
@@ -148,6 +149,18 @@ class Home extends Component {
                 })
             })
         }
+    }
+
+    getProfileCompany = () => {
+      const auth = getAuth();
+
+      axios.get(`http:localhost:5000/v1/company/profile`, { headers: { Authorization: `Bearer ${auth.token}`}})
+      .then(res => {
+        console.log("RES ",res)
+        this.setState({
+          data: res.data.data
+        })
+      })
     }
 
     componentDidMount(){

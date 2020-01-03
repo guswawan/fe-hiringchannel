@@ -67,7 +67,7 @@ export class DetailRegister extends Component {
       
         return (
 
-        	<Grid container sm ={12}>
+        	<Grid container>
           <Grid item sm ={7}>
             <div className="left-side">
               <img src={logo} className="logo-white" alt="logo"></img>

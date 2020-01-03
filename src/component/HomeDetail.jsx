@@ -41,6 +41,7 @@ class Engineer extends Component {
           name_project:'',
           id_engineer: '',
           name_company:'',
+          id_company:'',
           search: '',
           token: localStorage.getItem('token'),
           page: 1,
@@ -51,21 +52,20 @@ class Engineer extends Component {
     }
  
 
-
     handleSignout = (e) => {
       this.setState({ token: '' });
       localStorage.clear();
     }
-
     
-
     handleHire = () => {
+      // console.log("COO ",this.getProfileCompany(`http:localhost:5000/v1/company/profile`))
       const auth = getAuth();
       const token = auth.token;
       const url = `http://localhost:5000/v1/project`
       const data = {
         name_project: this.state.name_project,
-        id_engineer: this.props.location.state.data
+        id_engineer: this.props.location.state.data,
+        id_company: this.state.id_company
       }
       console.log("DATA ", data)
       const headers = { Authorization: `Bearer ${token}`};
@@ -75,14 +75,15 @@ class Engineer extends Component {
         data: data 
       })
       .then(res => {
+        console.log(res)
         Swal.fire({
           icon: 'success',
           title:'Success',
           text:'Success.'
         })
-        this.getFetch('http://localhost:5000/v1/engineer')
       })
       .catch(err => {
+        console.log(err)
         Swal.fire ({
           icon: 'error',
           title: 'error',
@@ -97,7 +98,6 @@ class Engineer extends Component {
 
     componentDidMount(){
       console.log("DID MOUNT")
-      // this.getFetch(`http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`)
     }
 
 
@@ -157,7 +157,7 @@ class Engineer extends Component {
           <Grid className="map">
 
             {/* {
-                filtered && filtered.map(data => {
+                this.state.data.map(data => {
                     return <Cards key={data.id} name={data.name_engineer}
                     desc={data.description} skill={data.skill}/>
                 })
@@ -187,6 +187,17 @@ class Engineer extends Component {
                   size="default"
                   multiline
                   rows="4"
+                  col="4"
+                  />
+                  <TextField
+                  label="Insert id company"
+                  id="outlined-size-small"
+                  defaultValue={this.state.is_company}
+                  onChange={ e => {this.setState({id_company:parseInt(e.target.value)})
+                  console.log(e.target.value)}}
+                  variant="outlined"
+                  size="default"
+                  multiline
                   col="4"
                   />
                   <br/>
