@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import chat from '../image/chat.png';
 import bell from '../image/bell.png';
+import UserIcon from '../image/default-user.png';
 import logo from '../image/arkademy-logo.png';
 import axios from 'axios';
 import getAuth from '../helpers/auth';
@@ -50,6 +51,8 @@ class Engineer extends Component {
           order: 'asc',
       }     
     }
+
+    
  
 
     handleSignout = (e) => {
@@ -64,8 +67,10 @@ class Engineer extends Component {
       const url = `http://localhost:5000/v1/project`
       const data = {
         name_project: this.state.name_project,
-        id_engineer: this.props.location.state.data,
-        id_company: this.state.id_company
+        id_engineer: this.props.location.state[0].data,
+        id_company: this.props.location.state[1].data2,
+        status_project: "Pending",
+        status_engineer: "Pending"
       }
       console.log("DATA ", data)
       const headers = { Authorization: `Bearer ${token}`};
@@ -102,7 +107,10 @@ class Engineer extends Component {
 
 
     render() {
-      console.log("ID ENG ",this.props.location.state.data)
+      console.log("ID ENG ",this.props.location.state[0].data)
+      console.log("ID COMP ",this.props.location.state[1].data2)
+      console.log("NAME COMP ",this.props.location.state[2].data)
+      const name_company = this.props.location.state[2].data
       
       if (!this.state.token) {
         this.props.history.push('/login');
@@ -128,7 +136,6 @@ class Engineer extends Component {
                     type="text"
                     placeholder="Search…"
                     value={this.state.search}
-                    onChange="{this.handleSearch.bind()}"
                     inputProps={{ 'aria-label': 'search' }}
                   />
                 </div>
@@ -137,8 +144,8 @@ class Engineer extends Component {
                   <Button className="btn-home" onClick={this.handleHome}>Home</Button>
             
                   <Button className="user-detail">
-                  <Avatar className="avatar">U</Avatar>
-                      <h4>User</h4>
+                  <Avatar className="avatar"><img src={UserIcon} className="avatar" alt="user"></img></Avatar>
+                  <h4>{name_company}</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
                       <hr width="1" size="40" />
@@ -184,23 +191,23 @@ class Engineer extends Component {
                   onChange={ e => {this.setState({name_project:e.target.value})
                   console.log(e.target.value)}}
                   variant="outlined"
-                  size="default"
+                  size="medium"
                   multiline
                   rows="4"
                   col="4"
                   />
-                  <TextField
+                  {/* <TextField
                   label="Insert id company"
                   id="outlined-size-small"
                   defaultValue={this.state.is_company}
                   onChange={ e => {this.setState({id_company:parseInt(e.target.value)})
                   console.log(e.target.value)}}
                   variant="outlined"
-                  size="default"
+                  size="medium"
                   multiline
                   col="4"
                   />
-                  <br/>
+                  <br/> */}
                 </div>
                 <div className="btn-editprofile">
                   <ButtonGroup>

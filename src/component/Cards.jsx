@@ -11,7 +11,17 @@ import '../styles/Cards.css';
       <Link 
       to={{
         pathname: "/home/detail-engineer/",
-        state: {data: props.goDetail} 
+        state:[
+          { 
+            data: props.goDetail
+          }, 
+          {
+            data2: props.id_company
+          },
+          {
+            data: props.name_company
+          }, 
+        ]
       }} 
       className="link-to-detail">
       <div className="card">

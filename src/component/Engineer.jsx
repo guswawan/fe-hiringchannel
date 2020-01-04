@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import chat from '../image/chat.png';
 import bell from '../image/bell.png';
+import UserIcon from '../image/default-user.png';
 import logo from '../image/arkademy-logo.png';
 import axios from 'axios';
 import getAuth from '../helpers/auth';
@@ -41,6 +42,7 @@ class Engineer extends Component {
           skill_item:'',
           search: '',
           name_company: '',
+          id_project:'',
           name_project: '',
           status_project:'',
           status_engineer: '',
@@ -107,16 +109,16 @@ class Engineer extends Component {
       .then(res => {
         this.setState({
           project: res.data.data,
-          // id_project: res.data.data.id_project,
-          // id_engineer: res.data.data.id_engineer,
-          // id_company: res.data.data.id_company,
-          // name_company: res.data.data.name_company,
-          // name_project: res.data.data.name_project,
-          // status_project: res.data.data.status_project,
-          // status_engineer: res.data.data.status_engineer,
+          id_project: res.data.data[0].id_project,
+          id_engineer: res.data.data[0].id_engineer,
+          id_company: res.data.data[0].id_company,
+          name_company: res.data.data[0].name_company,
+          name_project: res.data.data[0].name_project,
+          status_project: res.data.data[0].status_project,
+          status_engineer: res.data.data[0].status_engineer,
 
         })
-        console.log("PROJECT ",this.state.project)
+        console.log("PROJECT ",this.state.project[0])
       })
     }
 
@@ -154,9 +156,64 @@ class Engineer extends Component {
       })
     }
 
-    handleStatusProject = (index, status_project, status_engineer) => {
-      console.log("AAAA ", this.state.id_project)
+    handleStatusProject = () => {
+      console.log("ID PROJECT ",this.state.id_project)
+      const auth = getAuth();
+      const token = auth.token;
+      const url = `http://localhost:5000/v1/project/${this.state.id_project}`
+      console.log("ID PROJECT ",this.state.id_project)
+      const data = {
+        status_project: "Accept",
+        status_engineer: this.state.status_engineer
+      }
+      console.log("DATA ", data)
+      const headers = { Authorization: `Bearer ${token}`};
+
+      axios.patch(url, null, {
+        headers: headers,
+        params: data 
+      })
+      .then(res => {
+        console.log(res)
+        Swal.fire({
+          icon: 'success',
+          title:'Accept',
+          text:'Project accepted.'
+        })
+        this.getProject(`http://localhost:5000/v1/project/${this.state.id_project}`)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
+
+    handleStatusProjectDec = () => {
+      const auth = getAuth();
+      const token = auth.token;
+      const headers = { Authorization: `Bearer ${token}`};
+      const url = `http://localhost:5000/v1/project/${this.state.id_project}`
+      console.log("ID PROJECT ",this.state.id_project)
+      const data = {
+        status_project: "Decline",
+        status_engineer: this.state.status_engineer
+      }
+      axios.patch(url, null, {
+        headers: headers,
+        params: data 
+      })
+      .then(res => {
+        console.log(res)
+        Swal.fire ({
+          icon: 'error',
+          title: 'Decline',
+          text: 'Project Declined.'
+        })
+        this.getProject('http://localhost:5000/v1/project')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }    
 
     handleSkillUpgrade = () => {
       const auth = getAuth();
@@ -179,6 +236,7 @@ class Engineer extends Component {
           title:'Success',
           text:'Skill Upgraded.'
         })
+        this.getFetch(`http://localhost:5000/v1/engineer/profile`)
       })
       .catch(err => {
         Swal.fire ({
@@ -210,6 +268,7 @@ class Engineer extends Component {
           title:'Success',
           text:'Skill Deleted.'
         })
+        this.getFetch(`http://localhost:5000/v1/engineer/profile`)
       })
       .catch(err => {
         Swal.fire ({
@@ -263,8 +322,8 @@ class Engineer extends Component {
                   <Button className="btn-home">Home</Button>
             
                   <Button className="user-detail">
-                  <Avatar className="avatar">U</Avatar>
-                      <h4>User</h4>
+                  <Avatar className="avatar"><img src={UserIcon} className="avatar" alt="user"></img></Avatar>
+                  <h4>User</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
                       <hr width="1" size="40" />
@@ -289,53 +348,13 @@ class Engineer extends Component {
                 })
             }
 
-          </Grid>
-          <Grid className="map-table">
-            <div className="table-title">
-              <h1><b>Job list table.</b></h1>
-              <hr />
-            </div>
-            <br/>
-            <div className="wrap-table">
-              <TableContainer component={Paper}>
-                <Table className="{classes.table}" aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className="table-head-side-left">Company</TableCell>
-                      <TableCell className="table-head" align="left">Project Name</TableCell>
-                      <TableCell className="table-head" align="center">Status Project</TableCell>
-                      <TableCell className="table-head-side-right" align="center">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.project.map(project => (
-                      <TableRow key={project.id_project}>
-                        <TableCell component="th" scope="row">
-                          {project.name_company}
-                        </TableCell>
-                        <TableCell align="left">{project.name_project}</TableCell>
-                        <TableCell align="center">{project.status_project}</TableCell>
-                        <TableCell align="center">
-                          <Button color="secondary">x</Button>
-                          <Button color="inherit" onClick={this.handleStatusProject}>v</Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </div>
-          </Grid>
-          
-          <Grid className="map-form">
-            <div className="wrap-form">
               <div className="group-form-editprofile">
                 <h2>Edit profile</h2>
                 <p>Companies on Hiring Channel will get to know you with the info below</p>
                 <div className="form-editprofile">
                   <TextField
                   label="Full Name"
-                  id="outlined-size-small"
+                  // id="outlined-size-small"
                   value={this.state.name_engineer}
                   onChange={ e => {this.setState({name_engineer:e.target.value})
                   console.log(this.state.name_engineer)}}
@@ -345,7 +364,7 @@ class Engineer extends Component {
                   <br/>
                   <TextField
                     label="Description"
-                    id="outlined-size-small"
+                    // id="outlined-size-small"
                     value={this.state.description}
                     onChange={ e => {this.setState({description:e.target.value})
                   console.log(e.target.value)}}
@@ -355,7 +374,7 @@ class Engineer extends Component {
                   <br/>
                   <TextField
                   label="Location"
-                  id="outlined-size-small"
+                  // id="outlined-size-small"
                   value={this.state.location}
                   onChange={ e => {this.setState({location:e.target.value})
                   console.log(e.target.value)}}
@@ -364,7 +383,7 @@ class Engineer extends Component {
                   />
                   <br/>
                   <TextField
-                  id="outlined-size-small"
+                  // id="outlined-size-small"
                   type="date"
                   size="small"
                   variant="outlined"
@@ -398,6 +417,48 @@ class Engineer extends Component {
                   </ButtonGroup>
                 </div>
               </div>
+
+          </Grid>
+          <Grid className="map-table">
+            <div className="table-title">
+              <h1><b>Job list table.</b></h1>
+              <hr />
+            </div>
+            <br/>
+            <div className="wrap-table">
+              <TableContainer component={Paper}>
+                <Table className="{classes.table}" aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="table-head-side-left">Company</TableCell>
+                      <TableCell className="table-head" align="left">Project Name</TableCell>
+                      <TableCell className="table-head" align="center">Status Project</TableCell>
+                      <TableCell className="table-head-side-right" align="center">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {this.state.project.map(project => (
+                      <TableRow key={project.id_project}>
+                        <TableCell component="th" scope="row">
+                          {project.name_company}
+                        </TableCell>
+                        <TableCell align="left">{project.name_project}</TableCell>
+                        <TableCell align="center">{project.status_project}</TableCell>
+                        <TableCell align="center">
+                          <Button color="secondary" onClick={this.handleStatusProjectDec}>x</Button>
+                          <Button color="inherit" onClick={this.handleStatusProject}>v</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </Grid>
+          
+          <Grid className="map-form">
+            <div className="wrap-form">
+              
               {/* skill */}
               <div className="group-form-editprofile">
                 <h2>Your Skill</h2>

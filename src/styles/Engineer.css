@@ -80,6 +80,18 @@ hr {
     color: #bbb;
 }
 
+.avatar {
+    width: 50px;
+    margin-top: 0.3em;
+    margin-left: 0.47em;
+    /* padding-left: 2em; */
+    /* padding-right: 2em; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color: #bbb; */
+}
+
 
 /* Grid content */
 .grid-container {

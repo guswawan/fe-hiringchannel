@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import chat from '../image/chat.png';
 import bell from '../image/bell.png';
+import UserIcon from '../image/default-user.png';
 import logo from '../image/arkademy-logo.png';
 import axios from 'axios';
 import getAuth from '../helpers/auth';
@@ -130,7 +131,7 @@ class Company extends Component {
           // id_project: res.data.data.id_project,
           // id_engineer: res.data.data.id_engineer,
           // id_company: res.data.data.id_company,
-          // name_company: res.data.data.name_company,
+          name_company: res.data.data[1].name_company,
           // name_project: res.data.data.name_project,
           // status_project: res.data.data.status_project,
           // status_engineer: res.data.data.status_engineer,
@@ -153,6 +154,7 @@ class Company extends Component {
 
 
     render() {
+      console.log(this.props)
       
       if (!this.state.token) {
         this.props.history.push('/login');
@@ -183,8 +185,8 @@ class Company extends Component {
                   >Home</Button>
             
                   <Button className="user-detail">
-                  <Avatar className="avatar">U</Avatar>
-                      <h4>User</h4>
+                  <Avatar className="avatar"><img src={UserIcon} className="avatar" alt="user"></img></Avatar>
+                  <h4>{this.state.name_company}</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
                       <hr width="1" size="40" />

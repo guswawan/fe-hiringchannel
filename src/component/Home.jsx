@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import chat from '../image/chat.png';
 import bell from '../image/bell.png';
+import UserIcon from '../image/default-user.png';
 import logo from '../image/arkademy-logo.png';
 import axios from 'axios';
 import getAuth from '../helpers/auth';
@@ -28,6 +29,7 @@ class Home extends Component {
           token: localStorage.getItem('token'),
           page: 1,
           limit: 5,
+          username:'',
           sortBy: 'name',
           order: 'asc',
       }
@@ -119,19 +121,37 @@ class Home extends Component {
       this.props.history.push(`/home/detail-engineer/${id}`)
     }
 
-    getFetch = (url) =>{
-        const auth = getAuth();
-        console.log("Get Aouth ",auth)
-        console.log("Get Aouth Role",auth.role)
-        const authRole = auth.role
+    
+
+    getFetch = () =>{
+      const auth = getAuth();
+      console.log("Get Aouth ",auth)
+      console.log("Get Aouth Role",auth.role)
+      console.log("Get USERNAME ", auth.username)
+      const authRole = auth.role
+      let url = [
+        "http://localhost:5000/v1/company/profile",
+        `http://localhost:5000/v1/engineer?limit=${this.state.limit}&page=${this.state.page}`
+      ];
         if (authRole === 'company') {
-            axios.get(url, { headers: { Authorization: `Bearer ${auth.token}`}})
+            axios.get(url[1],{ headers: { Authorization: `Bearer ${auth.token}`}})
             .then(res => {
                 console.log("res axios ",res.data)
                 this.setState({
-                    data: res.data.result
-                    
+                    data: res.data.result,
                 })
+                axios.get(url[0],{ headers: { Authorization: `Bearer ${auth.token}`}})
+            .then(res => {
+                console.log("res axios pro company ",res.data.data[0])
+                this.setState({
+                    dataCompany: res.data.data,
+                    id_company: res.data.data[0].id,
+                    name_company: res.data.data[0].name_company,
+                    description: res.data.data[0].description,
+                    location: res.data.data[0].location,
+                })
+                
+            })   
             })
             
         } else if (authRole === 'engineer') {
@@ -204,8 +224,8 @@ class Home extends Component {
                   <Button 
                   className="user-detail"
                   onClick={this.getCompanyProfile}>
-                      <Avatar className="avatar">U</Avatar>
-                      <h4>User</h4>
+                      <Avatar className="avatar"><img src={UserIcon} className="avatar" alt="user"></img></Avatar>
+                      <h4>{this.state.name_company}</h4>
                   </Button>
                   <TypoGraphy className="typo-wrap" variant="inherit" gutterbottom="true">
                       <hr width="1" size="40" />
@@ -230,8 +250,14 @@ class Home extends Component {
 
             {
                 filtered && filtered.map(data => {
-                    return <Cards key={data.id} name={data.name_engineer}
-                    desc={data.description} skill={data.skill} goDetail={data.id}/>
+                    return <Cards 
+                    key={data.id} 
+                    name={data.name_engineer}
+                    desc={data.description} 
+                    skill={data.skill} 
+                    goDetail={data.id} 
+                    id_company={this.state.id_company}
+                    name_company={this.state.name_company} />
                 })
             }
             
