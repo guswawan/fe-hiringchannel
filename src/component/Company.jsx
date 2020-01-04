@@ -100,6 +100,7 @@ class Company extends Component {
           title:'Success',
           text:'Profile Updated.'
         })
+        this.getCompanyProfile(`http://localhost:5000/v1/company/profile`)
       })
       .catch(err => {
         console.log(err)
@@ -120,26 +121,26 @@ class Company extends Component {
       this.props.history.push('/home')
     }
 
-    getProject = () => {
-      const auth = getAuth();
-      const url = `http://localhost:5000/v1/project`
+    // getProject = () => {
+    //   const auth = getAuth();
+    //   const url = `http://localhost:5000/v1/project`
 
-      axios.get(url, { Authorization: `Bearer ${auth.token}`})
-      .then(res => {
-        this.setState({
-          project: res.data.data,
-          // id_project: res.data.data.id_project,
-          // id_engineer: res.data.data.id_engineer,
-          // id_company: res.data.data.id_company,
-          name_company: res.data.data[1].name_company,
-          // name_project: res.data.data.name_project,
-          // status_project: res.data.data.status_project,
-          // status_engineer: res.data.data.status_engineer,
+    //   axios.get(url, { Authorization: `Bearer ${auth.token}`})
+    //   .then(res => {
+    //     this.setState({
+    //       project: res.data.data,
+    //       // id_project: res.data.data.id_project,
+    //       // id_engineer: res.data.data.id_engineer,
+    //       // id_company: res.data.data.id_company,
+    //       // name_company: res.data.data[1].name_company,
+    //       // name_project: res.data.data.name_project,
+    //       // status_project: res.data.data.status_project,
+    //       // status_engineer: res.data.data.status_engineer,
 
-        })
-        console.log("PROJECT ",this.state.project)
-      })
-    }
+    //     })
+    //     console.log("PROJECT ",this.state.project)
+    //   })
+    // }
 
     handleStatusProject = (index, status_project, status_engineer) => {
       console.log("AAAA ", this.state.id_project)
@@ -148,7 +149,7 @@ class Company extends Component {
 
     componentDidMount(){
       console.log("componentDidMount")
-      this.getProject(`http://localhost:5000/v1/project`)
+      // this.getProject(`http://localhost:5000/v1/project`)
       this.getCompanyProfile(`http://localhost:5000/v1/company/profile`)
     }
 
