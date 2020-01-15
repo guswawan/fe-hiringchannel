@@ -3,7 +3,7 @@
 
 <p align="center">
     <img src="https://cdn.worldvectorlogo.com/logos/react.svg" height="90px" width="200px">  
-    <img src="https://pbs.twimg.com/profile_images/997239666641223680/l7PYMOSm.jpghttps://material-ui.com/static/images/material-ui-logo.svg" height="90px">  
+    <img src="https://pbs.twimg.com/profile_images/997239666641223680/l7PYMOSm.jpghttps://material-ui.com/static/images/material-ui-logo.svg">  
    
 </p>
 
