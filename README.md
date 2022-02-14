@@ -2,7 +2,7 @@
 ---
 
 <p align="center">
-    <img src="https://cdn.worldvectorlogo.com/logos/react.svg" height="90px" width="200px">  
+    <img src="https://user-images.githubusercontent.com/46936229/153843670-29931538-c45d-42a8-9f71-f70b66304729.png" width="200px">  
     
    
 </p>
