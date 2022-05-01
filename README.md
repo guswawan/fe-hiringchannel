@@ -1,4 +1,4 @@
-# Front End Hiring Channel App
+# Hiring Channel Web App
 ---
 
 <p align="center">
