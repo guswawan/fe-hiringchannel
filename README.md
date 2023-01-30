@@ -16,7 +16,7 @@ Hiring Channel is a platform where web designers, developers or engineers meet w
 
 
 
-## Technologies
+## Tech Stack
 Project is created with
 
 
